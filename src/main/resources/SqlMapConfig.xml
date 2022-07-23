@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--设置mybatis输出日志-->
+    <!--logImpl：表示对日志的控制-->
+    <!--STDOUT_LOGGING:将日志输出到控制台上-->
+    <!-- &amp;  和的转译   -->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+    <environments default="mysql">
+        <environment id="mysql">
+            <!--配置事务的类型，使用本地事务策略-->
+            <transactionManager type="JDBC"></transactionManager>
+            <!--是否使用连接池 POOLED表示使用链接池，UNPOOLED表示不使用连接池-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis_demo?characterEncoding=utf8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mapper/UserDao.xml"></mapper>
+    </mappers>
+</configuration>

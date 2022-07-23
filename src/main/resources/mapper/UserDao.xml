@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qcby.dao.UserDao">
+    <!--where if 标签-->
+    <select id="selectUsernameAndSex" parameterType="com.qcby.entity.User" resultType="com.qcby.entity.User">
+        select * from user
+        <where>
+            <if test="username != null">
+                username = #{username}
+            </if>
+            <if test="sex != null">
+                and sex = #{sex}
+            </if>
+        </where>
+    </select>
+<!--    set if 标签 -->
+    <update id="updateBySet" parameterType="com.qcby.entity.User">
+        update user
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="address != null">
+                address = #{address}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+<!--    choose when otherwise-->
+<!--    choose父标签，when和otherwise在choose内部-->
+<!--    when就相当于if和else if-->
+<!--    otherwise就相当于else-->
+    <select id="selectByChoose" parameterType="com.qcby.entity.User" resultType="com.qcby.entity.User">
+        select * from user
+        <where>
+            <choose>
+                <when test="id != null">
+                    id = #{id}
+                </when>
+                <when test="username != null">
+                    username = #{username}
+                </when>
+                <when test="sex != null">
+                    sex = #{sex}
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+<!--    trim：格式化标签，可以理解为万能标签，能替代where和set-->
+    <select id="selectByTrim" parameterType="com.qcby.entity.User" resultType="com.qcby.entity.User">
+        <trim prefix="set" suffixOverrides=",">
+
+        </trim>
+    </select>
+<!--    foreach标签-->
+    <!-- 对数组操作 ：批量删除  -->
+    <delete id="deleteByArray">
+        delete from user where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 对list集合操作，批量添加  -->
+    <insert id="insertByList">
+        insert into user (username,birthday,sex,address)values
+        <foreach collection="users" item="user" separator=",">
+            (#{user.username},#{user.birthday},#{user.sex},#{user.address})
+        </foreach>
+    </insert>
+
+</mapper>
